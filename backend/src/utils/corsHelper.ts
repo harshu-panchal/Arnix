@@ -29,8 +29,10 @@ export const isOriginAllowed = (origin: string | undefined): boolean => {
       .map((url) => url.trim().replace(/\/$/, '')) // Remove trailing slashes
       .filter((url) => url.length > 0);
 
-    // Default production origins (explicitly include www.dhakadsnazzy.com)
+    // Default production origins
     const defaultOrigins = [
+      'https://arnix.vercel.app',
+      'https://www.arnix.vercel.app',
       'https://www.dhakadsnazzy.com',
       'https://dhakadsnazzy.com',
     ];

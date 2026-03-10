@@ -20,6 +20,8 @@ const httpServer = createServer(app);
 
 // Simple CORS configuration - Standard and reliable
 const allowedOrigins = [
+  "https://arnix.vercel.app",
+  "https://www.arnix.vercel.app",
   "https://www.dhakadsnazzy.com",
   "https://dhakadsnazzy.com",
   // Add more origins from environment variable if needed
@@ -76,7 +78,7 @@ app.set("io", io);
 // Routes
 app.get("/", (_req: Request, res: Response) => {
   res.json({
-    message: "dhakadsnazzy API Server is running!",
+    message: "ARNIX API Server is running!",
     version: "1.0.0",
     socketIO: "Listening for WebSocket connections",
   });
@@ -121,7 +123,7 @@ async function startServer() {
   });
 
   httpServer.listen(PORT, () => {
-    console.log("\n\x1b[32m✓\x1b[0m \x1b[1mdhakadsnazzy Server Started\x1b[0m");
+    console.log("\n\x1b[32m✓\x1b[0m \x1b[1mARNIX Server Started\x1b[0m");
     console.log(`   \x1b[36mPort:\x1b[0m http://localhost:${PORT}`);
     console.log(
       `   \x1b[36mEnvironment:\x1b[0m ${process.env.NODE_ENV || "development"}`
