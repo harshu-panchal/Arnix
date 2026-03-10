@@ -418,7 +418,7 @@ export default function SellerReturnRequest() {
             <footer className="px-4 sm:px-6 py-4 text-center bg-white border-t border-neutral-200">
                 <p className="text-xs sm:text-sm text-neutral-600">
                     Copyright © 2025. Developed By{' '}
-                    <span className="font-semibold text-teal-600">Zeto Mart - 10 Minute App</span>
+                    <span className="font-semibold text-teal-600">ARNIX - Rewards beyond limit</span>
                 </p>
             </footer>
         </div>

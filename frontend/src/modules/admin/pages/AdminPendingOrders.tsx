@@ -816,8 +816,8 @@ export default function AdminPendingOrders() {
                               setAssignModalOpen(true);
                             }}
                             className={`px-2 py-1.5 text-xs font-medium rounded transition-colors ${order.deliveryBoyStatus === "Assigned"
-                                ? "bg-green-100 text-green-700 hover:bg-green-200"
-                                : "bg-blue-600 text-white hover:bg-blue-700"
+                              ? "bg-green-100 text-green-700 hover:bg-green-200"
+                              : "bg-blue-600 text-white hover:bg-blue-700"
                               }`}
                             title={
                               order.deliveryBoyStatus === "Assigned"
@@ -924,7 +924,7 @@ export default function AdminPendingOrders() {
       <div className="text-center py-4 text-xs sm:text-sm text-neutral-600">
         Copyright © 2025. Developed By{" "}
         <Link to="/" className="text-blue-600 hover:text-blue-700">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </Link>
       </div>
 

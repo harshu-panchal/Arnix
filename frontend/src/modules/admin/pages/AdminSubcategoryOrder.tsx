@@ -92,13 +92,13 @@ export default function AdminSubcategoryOrder() {
 
         const newSubcategories = [...subcategories];
         const draggedSubcategory = newSubcategories[draggedItem];
-        
+
         // Remove dragged item
         newSubcategories.splice(draggedItem, 1);
-        
+
         // Insert at new position
         newSubcategories.splice(dropIndex, 0, draggedSubcategory);
-        
+
         // Update order numbers
         const reorderedSubcategories = newSubcategories.map((subcategory, index) => ({
             ...subcategory,
@@ -118,7 +118,7 @@ export default function AdminSubcategoryOrder() {
             alert('Please select a category');
             return;
         }
-        
+
         if (subcategories.length === 0) {
             alert('No subcategories to update');
             return;
@@ -127,7 +127,7 @@ export default function AdminSubcategoryOrder() {
         // In real app, this would make an API call to update the order
         console.log('Updating subcategory order:', subcategories);
         alert('Subcategory order updated successfully!');
-        
+
         // Update original order to match current order
         setOriginalOrder([...subcategories]);
     };
@@ -187,9 +187,8 @@ export default function AdminSubcategoryOrder() {
                                                     handleDrop(e, index);
                                                 }}
                                                 onDragEnd={handleDragEnd}
-                                                className={`flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-move transition-all border-2 border-transparent ${
-                                                    draggedItem === index ? 'opacity-50' : 'hover:bg-gray-200'
-                                                }`}
+                                                className={`flex items-center justify-between p-4 bg-gray-100 rounded-lg cursor-move transition-all border-2 border-transparent ${draggedItem === index ? 'opacity-50' : 'hover:bg-gray-200'
+                                                    }`}
                                             >
                                                 <span className="text-sm font-medium text-neutral-800 flex-1">
                                                     {subcategory.name}
@@ -248,7 +247,7 @@ export default function AdminSubcategoryOrder() {
             {/* Footer */}
             <footer className="text-center py-4 text-sm text-neutral-600 border-t border-neutral-200 bg-white">
                 Copyright © 2025. Developed By{' '}
-                <a href="#" className="text-blue-600 hover:underline">Zeto Mart - 10 Minute App</a>
+                <a href="#" className="text-blue-600 hover:underline">ARNIX - Rewards beyond limit</a>
             </footer>
         </div>
     );

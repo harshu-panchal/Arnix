@@ -684,7 +684,7 @@ export default function AdminBrand() {
       <div className="text-center text-sm text-neutral-500 py-4">
         Copyright © 2025. Developed By{" "}
         <a href="#" className="text-teal-600 hover:text-teal-700">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </div>
     </div>

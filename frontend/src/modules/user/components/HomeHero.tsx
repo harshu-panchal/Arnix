@@ -289,7 +289,7 @@ export default function HomeHero({ activeTab = 'all', onTabChange }: HomeHeroPro
             {/* Left: Text content */}
             <div className="flex-1 pr-2">
               {/* Service name - small, dark */}
-              <div className="text-neutral-800 font-medium text-[10px] md:text-xs mb-0 leading-tight">Zeto Mart Quick Commerce</div>
+              <div className="text-neutral-800 font-medium text-[10px] md:text-xs mb-0 leading-tight">Arnix-Rewards beyond limit</div>
               {/* Delivery time - large, bold, dark grey/black */}
               <div className="text-neutral-900 font-extrabold text-2xl md:text-xl mb-0 md:mb-0.5 leading-tight">{appConfig.estimatedDeliveryTime}</div>
               {/* Location with dropdown indicator - only show if location is provided */}

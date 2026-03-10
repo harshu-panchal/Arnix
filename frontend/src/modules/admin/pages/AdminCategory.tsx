@@ -121,7 +121,7 @@ export default function AdminCategory() {
       const errorMessage =
         err && typeof err === "object" && "response" in err
           ? (err as { response?: { data?: { message?: string } } }).response
-              ?.data?.message
+            ?.data?.message
           : "Failed to load categories. Please try again.";
       setError(errorMessage || "Failed to load categories. Please try again.");
     } finally {
@@ -209,7 +209,7 @@ export default function AdminCategory() {
       const errorMessage =
         error && typeof error === "object" && "response" in error
           ? (error as { response?: { data?: { message?: string } } }).response
-              ?.data?.message
+            ?.data?.message
           : "Failed to delete category. Please try again.";
       alert(errorMessage || "Failed to delete category. Please try again.");
     }
@@ -250,7 +250,7 @@ export default function AdminCategory() {
       const errorMessage =
         error && typeof error === "object" && "response" in error
           ? (error as { response?: { data?: { message?: string } } }).response
-              ?.data?.message
+            ?.data?.message
           : "Failed to delete categories. Please try again.";
       alert(errorMessage || "Failed to delete categories. Please try again.");
     }
@@ -262,10 +262,9 @@ export default function AdminCategory() {
     const cascade =
       category.childrenCount && category.childrenCount > 0
         ? window.confirm(
-            `This category has subcategories. Do you want to ${
-              newStatus === "Inactive" ? "deactivate" : "activate"
-            } all subcategories as well?`
-          )
+          `This category has subcategories. Do you want to ${newStatus === "Inactive" ? "deactivate" : "activate"
+          } all subcategories as well?`
+        )
         : false;
 
     try {
@@ -282,7 +281,7 @@ export default function AdminCategory() {
       const errorMessage =
         error && typeof error === "object" && "response" in error
           ? (error as { response?: { data?: { message?: string } } }).response
-              ?.data?.message
+            ?.data?.message
           : "Failed to update category status. Please try again.";
       alert(
         errorMessage || "Failed to update category status. Please try again."
@@ -464,20 +463,18 @@ export default function AdminCategory() {
               <div className="flex items-center gap-2 bg-white border border-neutral-300 rounded p-1">
                 <button
                   onClick={() => setViewMode("tree")}
-                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${
-                    viewMode === "tree"
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${viewMode === "tree"
                       ? "bg-teal-600 text-white"
                       : "text-neutral-700 hover:bg-neutral-100"
-                  }`}>
+                    }`}>
                   Tree View
                 </button>
                 <button
                   onClick={() => setViewMode("list")}
-                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${
-                    viewMode === "list"
+                  className={`px-3 py-1.5 text-sm font-medium rounded transition-colors ${viewMode === "list"
                       ? "bg-teal-600 text-white"
                       : "text-neutral-700 hover:bg-neutral-100"
-                  }`}>
+                    }`}>
                   List View
                 </button>
               </div>
@@ -612,7 +609,7 @@ export default function AdminCategory() {
       <div className="text-center py-4 text-xs sm:text-sm text-neutral-600">
         Copyright © 2025. Developed By{" "}
         <a href="#" className="text-blue-600 hover:text-blue-700">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </div>
 

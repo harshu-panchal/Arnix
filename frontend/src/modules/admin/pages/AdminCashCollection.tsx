@@ -641,7 +641,7 @@ export default function AdminCashCollection() {
       <div className="bg-neutral-800 text-white text-center text-sm py-4">
         Copyright © 2025. Developed By{" "}
         <a href="#" className="text-blue-400 hover:text-blue-300">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </div>
     </div>

@@ -132,7 +132,7 @@ export default function DeliveryWallet() {
         key: razorpayKey,
         amount: amount,
         currency: currency,
-        name: "Zeto Mart",
+        name: "ARNIX",
         description: "Admin Payout for COD Collections",
         order_id: razorpayOrderId,
         handler: async (response: any) => {
@@ -286,11 +286,10 @@ export default function DeliveryWallet() {
           <button
             onClick={handlePayToAdmin}
             disabled={isSubmitting || pendingAdminPayout <= 0}
-            className={`w-full py-3.5 rounded-xl font-bold transition-all shadow-md active:scale-[0.98] flex items-center justify-center ${
-              pendingAdminPayout > 0
+            className={`w-full py-3.5 rounded-xl font-bold transition-all shadow-md active:scale-[0.98] flex items-center justify-center ${pendingAdminPayout > 0
                 ? "bg-red-600 text-white hover:bg-red-700"
                 : "bg-gray-100 text-gray-400 cursor-not-allowed shadow-none"
-            }`}>
+              }`}>
             {isSubmitting ? (
               <div className="h-5 w-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
@@ -327,29 +326,26 @@ export default function DeliveryWallet() {
         <div className="flex border-b">
           <button
             onClick={() => setActiveTab("transactions")}
-            className={`flex-1 py-3 text-sm font-semibold transition-colors ${
-              activeTab === "transactions"
+            className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === "transactions"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-600"
-            }`}>
+              }`}>
             Transactions
           </button>
           <button
             onClick={() => setActiveTab("withdrawals")}
-            className={`flex-1 py-3 text-sm font-semibold transition-colors ${
-              activeTab === "withdrawals"
+            className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === "withdrawals"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-600"
-            }`}>
+              }`}>
             Withdrawals
           </button>
           <button
             onClick={() => setActiveTab("commissions")}
-            className={`flex-1 py-3 text-sm font-semibold transition-colors ${
-              activeTab === "commissions"
+            className={`flex-1 py-3 text-sm font-semibold transition-colors ${activeTab === "commissions"
                 ? "text-green-600 border-b-2 border-green-600"
                 : "text-gray-600"
-            }`}>
+              }`}>
             Commissions
           </button>
         </div>
@@ -414,15 +410,14 @@ export default function DeliveryWallet() {
                         </p>
                       </div>
                       <span
-                        className={`px-2 py-1 rounded-full text-xs font-semibold ${
-                          withdrawal.status === "Completed"
+                        className={`px-2 py-1 rounded-full text-xs font-semibold ${withdrawal.status === "Completed"
                             ? "bg-green-100 text-green-700"
                             : withdrawal.status === "Approved"
                               ? "bg-blue-100 text-blue-700"
                               : withdrawal.status === "Rejected"
                                 ? "bg-red-100 text-red-700"
                                 : "bg-yellow-100 text-yellow-700"
-                        }`}>
+                          }`}>
                         {withdrawal.status}
                       </span>
                     </div>

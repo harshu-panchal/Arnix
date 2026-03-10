@@ -426,9 +426,9 @@ export default function OrderAgain() {
                   <div className="absolute top-12 left-1/2 -translate-x-1/2 w-32 h-0.5 bg-yellow-600/30"></div>
                   <div className="absolute top-20 left-1/2 -translate-x-1/2 w-28 h-0.5 bg-yellow-600/20"></div>
 
-                  {/* Zeto Mart text inside basket */}
+                  {/* ARNIX text inside basket */}
                   <div className="relative z-10 text-center px-4">
-                    <span className="text-2xl font-extrabold text-neutral-900 tracking-tight drop-shadow-sm">Zeto Mart</span>
+                    <span className="text-2xl font-extrabold text-neutral-900 tracking-tight drop-shadow-sm">ARNIX</span>
                     <span className="inline-block w-2.5 h-2.5 bg-green-500 rounded-full ml-1.5 shadow-sm"></span>
                   </div>
                 </div>

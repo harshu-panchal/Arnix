@@ -443,8 +443,8 @@ export default function AdminTaxes() {
                         <td className="p-4 align-middle border border-neutral-200">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${tax.status === "Active"
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
                               }`}>
                             {tax.status}
                           </span>
@@ -519,8 +519,8 @@ export default function AdminTaxes() {
                   }
                   disabled={currentPage === 1}
                   className={`p-2 border border-teal-600 rounded ${currentPage === 1
-                      ? "text-neutral-400 cursor-not-allowed bg-neutral-50"
-                      : "text-teal-600 hover:bg-teal-50"
+                    ? "text-neutral-400 cursor-not-allowed bg-neutral-50"
+                    : "text-teal-600 hover:bg-teal-50"
                     }`}
                   aria-label="Previous page">
                   <svg
@@ -547,8 +547,8 @@ export default function AdminTaxes() {
                   }
                   disabled={currentPage === totalPages}
                   className={`p-2 border border-teal-600 rounded ${currentPage === totalPages
-                      ? "text-neutral-400 cursor-not-allowed bg-neutral-50"
-                      : "text-teal-600 hover:bg-teal-50"
+                    ? "text-neutral-400 cursor-not-allowed bg-neutral-50"
+                    : "text-teal-600 hover:bg-teal-50"
                     }`}
                   aria-label="Next page">
                   <svg
@@ -576,7 +576,7 @@ export default function AdminTaxes() {
       <footer className="text-center py-4 text-sm text-neutral-600 border-t border-neutral-200 bg-white">
         Copyright © 2025. Developed By{" "}
         <a href="#" className="text-blue-600 hover:underline">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </footer>
     </div>

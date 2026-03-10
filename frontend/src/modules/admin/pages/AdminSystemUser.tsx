@@ -247,7 +247,7 @@ export default function AdminSystemUser() {
       'role': 'role',
     };
     const backendColumn = columnMap[column] || column;
-    
+
     if (sortColumn === backendColumn) {
       setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
     } else {
@@ -272,7 +272,7 @@ export default function AdminSystemUser() {
       'role': 'role',
     };
     const backendColumn = columnMap[column] || column;
-    
+
     if (sortColumn !== backendColumn) {
       return (
         <span className="inline-block ml-1">
@@ -319,7 +319,7 @@ export default function AdminSystemUser() {
             <div className="bg-teal-600 text-white px-6 py-4 rounded-t-lg">
               <h2 className="text-lg font-semibold">Add System User</h2>
             </div>
-            
+
             {/* Error Message */}
             {error && (
               <div className="p-4 bg-red-50 border-l-4 border-red-500 text-red-700 flex items-center justify-between">
@@ -333,7 +333,7 @@ export default function AdminSystemUser() {
                 </button>
               </div>
             )}
-            
+
             {/* Success Message */}
             {successMessage && (
               <div className="p-4 bg-green-50 border-l-4 border-green-500 text-green-700 flex items-center justify-between">
@@ -670,11 +670,10 @@ export default function AdminSystemUser() {
                         key={page}
                         onClick={() => setCurrentPage(page)}
                         disabled={loading}
-                        className={`px-3 py-1.5 border rounded text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
-                          currentPage === page
+                        className={`px-3 py-1.5 border rounded text-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${currentPage === page
                             ? 'bg-teal-600 text-white border-teal-600'
                             : 'border-neutral-300 hover:bg-neutral-50'
-                        }`}
+                          }`}
                       >
                         {page}
                       </button>
@@ -700,7 +699,7 @@ export default function AdminSystemUser() {
       <div className="text-center text-sm text-neutral-500 py-4 px-6">
         Copyright © 2025. Developed By{' '}
         <a href="#" className="text-teal-600 hover:text-teal-700">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </div>
     </div>

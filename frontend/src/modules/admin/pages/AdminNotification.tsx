@@ -515,11 +515,10 @@ export default function AdminNotification() {
                   <button
                     onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
                     disabled={currentPage === 1 || loading}
-                    className={`p-2 border border-green-600 rounded ${
-                      currentPage === 1
+                    className={`p-2 border border-green-600 rounded ${currentPage === 1
                         ? 'text-neutral-400 cursor-not-allowed bg-neutral-50'
                         : 'text-green-600 hover:bg-green-50'
-                    }`}
+                      }`}
                     aria-label="Previous page"
                   >
                     <svg
@@ -554,11 +553,10 @@ export default function AdminNotification() {
                         key={pageNum}
                         onClick={() => setCurrentPage(pageNum)}
                         disabled={loading}
-                        className={`px-3 py-1.5 border border-green-600 rounded font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed ${
-                          currentPage === pageNum
+                        className={`px-3 py-1.5 border border-green-600 rounded font-medium text-sm disabled:opacity-50 disabled:cursor-not-allowed ${currentPage === pageNum
                             ? 'bg-green-600 text-white'
                             : 'text-green-600 hover:bg-green-50'
-                        }`}
+                          }`}
                       >
                         {pageNum}
                       </button>
@@ -570,11 +568,10 @@ export default function AdminNotification() {
                   <button
                     onClick={() => setCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                     disabled={currentPage === totalPages || loading}
-                    className={`p-2 border border-green-600 rounded ${
-                      currentPage === totalPages
+                    className={`p-2 border border-green-600 rounded ${currentPage === totalPages
                         ? 'text-neutral-400 cursor-not-allowed bg-neutral-50'
                         : 'text-green-600 hover:bg-green-50'
-                    }`}
+                      }`}
                     aria-label="Next page"
                   >
                     <svg
@@ -604,7 +601,7 @@ export default function AdminNotification() {
       <footer className="text-center py-4 text-sm text-neutral-600 border-t border-neutral-200 bg-white">
         Copyright © 2025. Developed By{' '}
         <a href="#" className="text-blue-600 hover:underline">
-          Zeto Mart - 10 Minute App
+          ARNIX - Rewards beyond limit
         </a>
       </footer>
     </div>

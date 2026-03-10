@@ -141,7 +141,7 @@ export default function DeliveryAbout() {
 
         {/* Copyright */}
         <div className="mt-6 text-center">
-          <p className="text-neutral-400 text-xs">© 2025 Zeto Mart - 10 Minute App. All rights reserved.</p>
+          <p className="text-neutral-400 text-xs">© 2025 ARNIX - Rewards beyond limit. All rights reserved.</p>
         </div>
       </div>
       <DeliveryBottomNav />

@@ -2101,7 +2101,7 @@ export default function Checkout() {
         </button>
       </div>
 
-      {/* Made with love by Zeto Mart */}
+      {/* Made with love by ARNIX */}
       <div className="px-4 py-2">
         <div className="w-full flex flex-col items-center justify-center">
           <div className="flex items-center gap-1.5 text-neutral-500">
@@ -2114,7 +2114,7 @@ export default function Checkout() {
             </motion.span>
             <span className="text-[10px] font-medium">by</span>
             <span className="text-[10px] font-semibold text-green-600">
-              Zeto Mart
+              ARNIX
             </span>
           </div>
         </div>

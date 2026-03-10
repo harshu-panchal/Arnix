@@ -85,11 +85,11 @@ export default function Login() {
         {/* Animation Section */}
         <div className="w-full bg-gradient-to-b from-white/50 to-transparent p-6 pb-0 flex flex-col items-center">
           {/* Logo */}
-          <div className="mb-2">
+          <div className="mb-1">
             <img
-              src="/assets/Zeto-mart.png"
-              alt="Zeto Mart"
-              className="h-16 w-auto object-contain drop-shadow-md"
+              src="/assets/arnix-logo.png"
+              alt="ARNIX"
+              className="h-40 w-auto object-contain drop-shadow-md"
             />
           </div>
 
@@ -201,7 +201,7 @@ export default function Login() {
       {/* Footer Branding */}
       <div className="absolute bottom-6 left-0 right-0 text-center">
         <p className="text-xs font-medium text-neutral-500 opacity-60 uppercase tracking-widest">
-          Powered by Zeto Mart
+          Powered by ARNIX
         </p>
       </div>
 
