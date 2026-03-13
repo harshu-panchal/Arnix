@@ -240,7 +240,14 @@ export async function sendSmsOtp(
 
     // Mock mode
     if (isMockMode()) {
-      await saveOtpToDb(mobile, otp, userType);
+      // In local/dev mock mode, use a fixed OTP to make manual testing and UI smoke tests reliable.
+      // Keep production behavior unchanged (random OTP) in case the deployment is missing SMS creds.
+      const mockOtp =
+        process.env.NODE_ENV !== 'production' && process.env.USE_MOCK_OTP === 'true'
+          ? '1234'
+          : otp;
+
+      await saveOtpToDb(mobile, mockOtp, userType);
       return {
         success: true,
         sessionId: 'MOCK_SESSION_' + mobile,
@@ -348,7 +355,14 @@ export async function sendOTP(
 
     // Mock mode
     if (isMockMode()) {
-      await saveOtpToDb(mobile, otp, userType);
+      // In local/dev mock mode, use a fixed OTP to make manual testing and UI smoke tests reliable.
+      // Keep production behavior unchanged (random OTP) in case the deployment is missing SMS creds.
+      const mockOtp =
+        process.env.NODE_ENV !== 'production' && process.env.USE_MOCK_OTP === 'true'
+          ? '1234'
+          : otp;
+
+      await saveOtpToDb(mobile, mockOtp, userType);
       return {
         success: true,
         message: 'OTP sent successfully',

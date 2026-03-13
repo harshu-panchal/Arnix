@@ -97,6 +97,12 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
 
   const addOrder = async (order: Order): Promise<string | undefined> => {
     try {
+      const lat = order.address.latitude;
+      const lng = order.address.longitude;
+      if (lat == null || lng == null || Number.isNaN(lat) || Number.isNaN(lng)) {
+        throw new Error("Delivery location is required to place an order.");
+      }
+
       // Construct payload
       const payload = {
         address: {
@@ -105,8 +111,8 @@ export function OrdersProvider({ children }: { children: ReactNode }) {
           state: order.address.state || "",
           pincode: order.address.pincode,
           landmark: order.address.landmark || "",
-          latitude: order.address.latitude ?? 0,
-          longitude: order.address.longitude ?? 0,
+          latitude: lat,
+          longitude: lng,
         },
         paymentMethod: order.paymentMethod || "COD",
         useWallet: order.useWallet,

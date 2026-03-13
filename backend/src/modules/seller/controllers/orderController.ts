@@ -57,11 +57,16 @@ export const getOrders = asyncHandler(
 
     // Search filter
     if (search) {
+      const searchRegex = { $regex: search, $options: "i" };
       query.$or = [
-        { orderId: { $regex: search, $options: "i" } },
-        { invoiceNumber: { $regex: search, $options: "i" } },
-        { 'deliveryAddress.name': { $regex: search, $options: "i" } },
-        { 'deliveryAddress.phone': { $regex: search, $options: "i" } },
+        // Field names here must match the Order model
+        { orderNumber: searchRegex },
+        { invoiceNumber: searchRegex },
+        { customerName: searchRegex },
+        { customerPhone: searchRegex },
+        { "deliveryAddress.address": searchRegex },
+        { "deliveryAddress.city": searchRegex },
+        { "deliveryAddress.pincode": searchRegex },
       ];
     }
 
@@ -85,6 +90,14 @@ export const getOrders = asyncHandler(
     // Get total count for pagination
     const total = await Order.countDocuments(query);
 
+    const normalizeSellerOrderStatus = (rawStatus: any): string => {
+      const statusStr = String(rawStatus ?? "");
+      // Legacy / inconsistent statuses found in older data that can break seller UI controls.
+      if (statusStr === "Placed") return "Received";
+      if (statusStr === "Out for Delivery") return "On the way";
+      return statusStr;
+    };
+
     // Format response for frontend
     const formattedOrders = orders.map(order => ({
       id: order._id,
@@ -93,7 +106,7 @@ export const getOrders = asyncHandler(
         ? order.estimatedDeliveryDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' })
         : order.orderDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
       orderDate: order.orderDate.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }),
-      status: order.status === 'On the way' ? 'On the way' : order.status,
+      status: normalizeSellerOrderStatus((order as any).status),
       amount: order.total,
       customerName: (order.customer as any)?.name || order.customerName || '',
       customerPhone: (order.customer as any)?.phone || order.customerPhone || '',
@@ -208,7 +221,12 @@ export const getOrderById = asyncHandler(
       orderDate: order.orderDate ? order.orderDate.toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
       deliveryDate: order.estimatedDeliveryDate ? order.estimatedDeliveryDate.toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
       timeSlot: order.timeSlot || 'N/A',
-      status: order.status === 'On the way' ? 'Out For Delivery' : order.status,
+      status: (() => {
+        const statusStr = String((order as any).status ?? "");
+        if (statusStr === "Placed") return "Received";
+        if (statusStr === "Out for Delivery") return "On the way";
+        return statusStr;
+      })(),
       customerName: (order.customer as any)?.name || order.customerName || '',
       customerEmail: (order.customer as any)?.email || order.customerEmail || '',
       customerPhone: (order.customer as any)?.phone || order.customerPhone || '',

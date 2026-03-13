@@ -47,7 +47,9 @@ export interface OrderDetail {
   orderDate: string;
   deliveryDate: string;
   timeSlot: string;
-  status: 'Out For Delivery' | 'Received' | 'Payment Pending' | 'Cancelled' | 'Rejected';
+  // Seller order status values are not fully consistent across old/new data in the DB,
+  // so we keep this flexible to avoid UI breakage when unexpected statuses appear.
+  status: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;
@@ -63,7 +65,7 @@ export interface OrderDetail {
 }
 
 export interface UpdateOrderStatusData {
-  status: 'Accepted' | 'On the way' | 'Delivered' | 'Cancelled';
+  status: 'Accepted' | 'On the way' | 'Delivered' | 'Cancelled' | 'Rejected';
 }
 
 export interface GetOrdersParams {

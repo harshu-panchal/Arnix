@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import mongoose from "mongoose";
 import Category from "../../../models/Category";
 import SubCategory from "../../../models/SubCategory";
 import Product from "../../../models/Product";
@@ -109,14 +110,18 @@ export const getSubcategories = asyncHandler(
       sortOrder = "asc",
     } = req.query;
 
-    // Verify parent category exists
-    const parentCategory = await Category.findById(id);
+    // Verify parent category exists.
+    // Backward-compatible: accept either a Mongo ObjectId or a slug.
+    const parentCategory = mongoose.Types.ObjectId.isValid(id)
+      ? await Category.findById(id)
+      : await Category.findOne({ slug: String(id).toLowerCase() });
     if (!parentCategory) {
       return res.status(404).json({
         success: false,
         message: "Parent category not found",
       });
     }
+    const parentCategoryId = parentCategory._id.toString();
 
     // Pagination
     const pageNum = parseInt(page as string);
@@ -136,7 +141,7 @@ export const getSubcategories = asyncHandler(
 
     // 1. Get subcategories from new Category model (where parentId = category id)
     const categorySubcategoriesQuery: any = {
-      parentId: id,
+      parentId: parentCategoryId,
       status: "Active", // Only active subcategories
     };
     if (searchQuery) {
@@ -152,7 +157,7 @@ export const getSubcategories = asyncHandler(
       .lean();
 
     // 2. Get subcategories from old SubCategory model (for backward compatibility)
-    const oldSubcategoryQuery: any = { category: id };
+    const oldSubcategoryQuery: any = { category: parentCategoryId };
     if (searchQuery) {
       oldSubcategoryQuery.name = searchQuery;
     }

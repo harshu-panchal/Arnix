@@ -106,6 +106,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const queryLat = lat !== undefined ? lat : location?.latitude;
       const queryLng = lng !== undefined ? lng : location?.longitude;
 
+      if (queryLat == null || queryLng == null || Number.isNaN(queryLat) || Number.isNaN(queryLng)) {
+        setLoading(false);
+        return;
+      }
+
       const response = await getCart({
         latitude: queryLat,
         longitude: queryLng

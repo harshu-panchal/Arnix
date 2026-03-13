@@ -16,9 +16,12 @@ const IconLoader: React.FC<IconLoaderProps> = ({ forceShow = false }) => {
   useEffect(() => {
     if (show && !animationData) {
       fetch('/animations/loading.json')
-        .then(res => res.json())
-        .then(data => setAnimationData(data))
-        .catch(err => console.error('Failed to load animation:', err));
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data) setAnimationData(data);
+        })
+        // If the animation asset is missing or fetch fails, fall back to spinner silently.
+        .catch(() => null);
     }
   }, [show, animationData]);
 

@@ -223,6 +223,7 @@ export default function SellerOrders() {
                   className="w-full sm:w-auto px-3 py-2 border border-neutral-300 rounded text-xs sm:text-sm text-neutral-900 bg-white focus:outline-none focus:ring-1 focus:ring-green-500 focus:border-green-500"
                 >
                   <option>All Status</option>
+                  <option>Received</option>
                   <option>Pending</option>
                   <option>Accepted</option>
                   <option>On the way</option>

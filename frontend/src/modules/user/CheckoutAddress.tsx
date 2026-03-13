@@ -229,6 +229,17 @@ export default function CheckoutAddress() {
         }
       }
 
+      const hasValidCoords =
+        Number.isFinite(finalLat) &&
+        Number.isFinite(finalLng) &&
+        !(finalLat === 0 && finalLng === 0);
+      if (!hasValidCoords) {
+        showToast(
+          "Location couldn't be determined for this address. You can still save it, but checkout will require location access.",
+          "info"
+        );
+      }
+
       const payload = {
         fullName: address.name,
         phone: address.phone,
@@ -241,8 +252,7 @@ export default function CheckoutAddress() {
         type: addressType.charAt(0).toUpperCase() + addressType.slice(1) as 'Home' | 'Work' | 'Hotel' | 'Other', // Capitalize
         isDefault: true, // Auto set as default for now
         address: `${address.flat}, ${address.street}`, // Fallback combined string
-        latitude: finalLat,
-        longitude: finalLng,
+        ...(hasValidCoords ? { latitude: finalLat, longitude: finalLng } : {}),
       };
 
       // If editing an existing address, use updateAddress instead

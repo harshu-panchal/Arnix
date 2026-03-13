@@ -1,4 +1,4 @@
-import {
+﻿import {
   createContext,
   useContext,
   useState,
@@ -97,27 +97,31 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     import("../services/pushNotificationService").then(({ registerFCMToken }) => {
       registerFCMToken(true)
         .then(() => {
-          // Send test notification after successful token registration
-          const apiUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api/v1';
+          // Optional: send a one-off test notification after token registration.
+          // Keep this opt-in to avoid noisy console errors for normal users / environments.
+          const shouldSendTestNotification =
+            import.meta.env.DEV &&
+            String(import.meta.env.VITE_FCM_TEST_NOTIFICATION || "").toLowerCase() === "true";
 
-          fetch(`${apiUrl}/fcm-tokens/test`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${newToken}`,
-              'Content-Type': 'application/json'
-            }
-          })
-            .then(response => response.json())
-            .then(data => {
-              console.log('✅ Test notification sent:', data);
-              if (data.success) {
-                console.log(`📬 Notification sent to ${data.details?.totalTokens} device(s)`);
-              }
+          if (shouldSendTestNotification) {
+            const apiUrl =
+              import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api/v1";
+
+            fetch(`${apiUrl}/fcm-tokens/test`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+                "Content-Type": "application/json",
+              },
             })
-            .catch(error => {
-              console.error('❌ Failed to send test notification:', error);
-            });
-        })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log("Test notification sent:", data);
+              })
+              .catch((error) => {
+                console.warn("Test notification failed:", error);
+              });
+          }})
         .catch((error) => {
           console.error("Failed to register FCM token:", error);
         });
@@ -165,3 +169,4 @@ export function useAuth() {
   }
   return context;
 }
+

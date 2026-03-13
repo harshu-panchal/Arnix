@@ -4,6 +4,19 @@ import Delivery from "../../../models/Delivery";
 import DeliveryAssignment from "../../../models/DeliveryAssignment";
 import CashCollection from "../../../models/CashCollection";
 
+const availabilityToIsOnline = (available: any): boolean | undefined => {
+  if (available === undefined || available === null || available === "") return undefined;
+  if (available === true || available === "true") return true;
+  if (available === false || available === "false") return false;
+  if (available === "Available") return true;
+  if (available === "Not Available") return false;
+  return undefined;
+};
+
+const isOnlineToAvailability = (isOnline: any): "Available" | "Not Available" => {
+  return Boolean(isOnline) ? "Available" : "Not Available";
+};
+
 /**
  * Create a new delivery boy
  */
@@ -57,7 +70,10 @@ export const createDeliveryBoy = asyncHandler(
     return res.status(201).json({
       success: true,
       message: "Delivery boy created successfully",
-      data: deliveryBoy,
+      data: {
+        ...(deliveryBoy.toObject ? deliveryBoy.toObject() : (deliveryBoy as any)),
+        available: isOnlineToAvailability((deliveryBoy as any).isOnline),
+      },
     });
   }
 );
@@ -80,7 +96,8 @@ export const getAllDeliveryBoys = asyncHandler(
     const query: any = {};
 
     if (status) query.status = status;
-    if (available) query.available = available;
+    const isOnline = availabilityToIsOnline(available);
+    if (isOnline !== undefined) query.isOnline = isOnline;
     if (search) {
       query.$or = [
         { name: { $regex: search as string, $options: "i" } },
@@ -91,7 +108,8 @@ export const getAllDeliveryBoys = asyncHandler(
     }
 
     const sort: any = {};
-    sort[sortBy as string] = sortOrder === "asc" ? 1 : -1;
+    const sortKey = (sortBy as string) === "available" ? "isOnline" : (sortBy as string);
+    sort[sortKey] = sortOrder === "asc" ? 1 : -1;
 
     const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
 
@@ -107,7 +125,10 @@ export const getAllDeliveryBoys = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Delivery boys fetched successfully",
-      data: deliveryBoys,
+      data: deliveryBoys.map((d: any) => ({
+        ...(d.toObject ? d.toObject() : d),
+        available: isOnlineToAvailability(d.isOnline),
+      })),
       pagination: {
         page: parseInt(page as string),
         limit: parseInt(limit as string),
@@ -137,7 +158,10 @@ export const getDeliveryBoyById = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Delivery boy fetched successfully",
-      data: deliveryBoy,
+      data: {
+        ...(deliveryBoy.toObject ? deliveryBoy.toObject() : (deliveryBoy as any)),
+        available: isOnlineToAvailability((deliveryBoy as any).isOnline),
+      },
     });
   }
 );
@@ -168,7 +192,10 @@ export const updateDeliveryBoy = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Delivery boy updated successfully",
-      data: deliveryBoy,
+      data: {
+        ...(deliveryBoy.toObject ? deliveryBoy.toObject() : (deliveryBoy as any)),
+        available: isOnlineToAvailability((deliveryBoy as any).isOnline),
+      },
     });
   }
 );
@@ -249,7 +276,10 @@ export const updateDeliveryStatus = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Delivery boy status updated successfully",
-      data: deliveryBoy,
+      data: {
+        ...(deliveryBoy.toObject ? deliveryBoy.toObject() : (deliveryBoy as any)),
+        available: isOnlineToAvailability((deliveryBoy as any).isOnline),
+      },
     });
   }
 );
@@ -260,18 +290,23 @@ export const updateDeliveryStatus = asyncHandler(
 export const updateDeliveryBoyAvailability = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
-    const { available } = req.body; // Expecting "Available" or "Not Available"
+    const { available, isOnline: isOnlineRaw } = req.body; // Accept either string or boolean
 
-    if (!["Available", "Not Available"].includes(available)) {
+    let nextIsOnline = availabilityToIsOnline(available);
+    if (nextIsOnline === undefined && (isOnlineRaw === true || isOnlineRaw === false)) {
+      nextIsOnline = Boolean(isOnlineRaw);
+    }
+
+    if (nextIsOnline === undefined) {
       return res.status(400).json({
         success: false,
-        message: "Availability must be 'Available' or 'Not Available'",
+        message: "Availability must be 'Available' or 'Not Available' (or boolean isOnline)",
       });
     }
 
     const deliveryBoy = await Delivery.findByIdAndUpdate(
       id,
-      { available },
+      { isOnline: nextIsOnline },
       { new: true, runValidators: true }
     ).select("-password");
 
@@ -285,7 +320,10 @@ export const updateDeliveryBoyAvailability = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Delivery boy availability updated successfully",
-      data: deliveryBoy,
+      data: {
+        ...(deliveryBoy.toObject ? deliveryBoy.toObject() : (deliveryBoy as any)),
+        available: isOnlineToAvailability((deliveryBoy as any).isOnline),
+      },
     });
   }
 );

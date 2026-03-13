@@ -12,7 +12,8 @@ interface StockItem {
     variation: string;
     stock: number | 'Unlimited';
     status: 'Published' | 'Unpublished';
-    category: string;
+    categoryId: string;
+    categoryName: string;
 }
 
 export default function SellerStockManagement() {
@@ -28,7 +29,7 @@ export default function SellerStockManagement() {
     const [currentPage, setCurrentPage] = useState(1);
     const [sortColumn, setSortColumn] = useState<string | null>(null);
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-    const [categories, setCategories] = useState<string[]>([]);
+    const [categories, setCategories] = useState<Array<{ id: string; name: string }>>([]);
     const [totalPages, setTotalPages] = useState(1);
     const { user } = useAuth();
 
@@ -38,7 +39,7 @@ export default function SellerStockManagement() {
             try {
                 const res = await getCategories();
                 if (res.success) {
-                    setCategories(res.data.map(cat => cat.name));
+                    setCategories(res.data.map(cat => ({ id: cat._id, name: cat.name })));
                 }
             } catch (err) {
                 console.error("Error fetching categories:", err);
@@ -89,6 +90,8 @@ export default function SellerStockManagement() {
                     // Convert products to stock items
                     const items: StockItem[] = [];
                     response.data.forEach((product: Product) => {
+                        const categoryId = (product.category as any)?._id || (product.category as any) || '';
+                        const categoryName = (product.category as any)?.name || 'Uncategorized';
                         product.variations.forEach((variation, index) => {
                             items.push({
                                 variationId: variation._id || `${product._id}-${index}`,
@@ -99,7 +102,8 @@ export default function SellerStockManagement() {
                                 variation: variation.title || variation.value || variation.name || 'Default',
                                 stock: variation.stock,
                                 status: product.publish ? 'Published' : 'Unpublished',
-                                category: (product.category as any)?.name || 'Uncategorized',
+                                categoryId: String(categoryId),
+                                categoryName,
                             });
                         });
                     });
@@ -151,7 +155,7 @@ export default function SellerStockManagement() {
     let filteredItems = stockItems.filter(item => {
         const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
             item.seller.toLowerCase().includes(searchTerm.toLowerCase());
-        const matchesCategory = categoryFilter === 'All Category' || item.category === categoryFilter;
+        const matchesCategory = categoryFilter === 'All Category' || item.categoryId === categoryFilter;
         const matchesStatus = statusFilter === 'All Products' ||
             (statusFilter === 'Published' && item.status === 'Published') ||
             (statusFilter === 'Unpublished' && item.status === 'Unpublished');
@@ -226,7 +230,7 @@ export default function SellerStockManagement() {
                             >
                                 <option value="All Category">All Category</option>
                                 {categories.map(cat => (
-                                    <option key={cat} value={cat}>{cat}</option>
+                                    <option key={cat.id} value={cat.id}>{cat.name}</option>
                                 ))}
                             </select>
                         </div>
@@ -282,7 +286,7 @@ export default function SellerStockManagement() {
                                         `"${item.variation}"`,
                                         item.stock,
                                         item.status,
-                                        `"${item.category}"`
+                                        `"${item.categoryName}"`
                                     ].join(','))
                                 ].join('\n');
                                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });

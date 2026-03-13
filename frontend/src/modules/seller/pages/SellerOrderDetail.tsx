@@ -1,7 +1,9 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { getOrderById, updateOrderStatus, OrderDetail } from '../../../services/api/orderService';
+import { getOrderById, updateOrderStatus, OrderDetail, UpdateOrderStatusData } from '../../../services/api/orderService';
 import jsPDF from 'jspdf';
+
+type SellerOrderStatus = OrderDetail['status'] | UpdateOrderStatusData['status'];
 
 export default function SellerOrderDetail() {
   const { id } = useParams<{ id: string }>();
@@ -9,7 +11,7 @@ export default function SellerOrderDetail() {
   const [orderDetail, setOrderDetail] = useState<OrderDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string>('');
-  const [orderStatus, setOrderStatus] = useState<string>('Out For Delivery');
+  const [orderStatus, setOrderStatus] = useState<SellerOrderStatus>('Received');
 
   // Fetch order detail from API
   useEffect(() => {
@@ -37,14 +39,14 @@ export default function SellerOrderDetail() {
   }, [id]);
 
   // Handle status update
-  const handleStatusUpdate = async (newStatus: string) => {
+  const handleStatusUpdate = async (newStatus: UpdateOrderStatusData['status']) => {
     if (!orderDetail) return;
 
     try {
-      const response = await updateOrderStatus(orderDetail.id, { status: newStatus as any });
+      const response = await updateOrderStatus(orderDetail.id, { status: newStatus });
       if (response.success) {
         setOrderStatus(newStatus);
-        setOrderDetail({ ...orderDetail, status: newStatus as any });
+        setOrderDetail({ ...orderDetail, status: newStatus });
       } else {
         alert('Failed to update order status');
       }
@@ -381,10 +383,22 @@ export default function SellerOrderDetail() {
               ) : (
                 <select
                   value={orderStatus}
-                  onChange={(e) => handleStatusUpdate(e.target.value)}
+                  onChange={(e) => handleStatusUpdate(e.target.value as UpdateOrderStatusData['status'])}
                   className="w-full sm:w-64 px-4 py-2 border border-neutral-300 rounded-lg text-sm text-neutral-900 bg-white focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                   disabled={orderStatus === 'Rejected' || orderStatus === 'Cancelled' || orderStatus === 'Delivered'}
                 >
+                  {(() => {
+                    const allowed: UpdateOrderStatusData['status'][] = ['Accepted', 'On the way', 'Delivered', 'Cancelled'];
+                    const hasOption =
+                      allowed.includes(orderStatus as UpdateOrderStatusData['status']) ||
+                      orderStatus === 'Rejected';
+
+                    return !hasOption ? (
+                      <option value={orderStatus} disabled>
+                        {orderStatus}
+                      </option>
+                    ) : null;
+                  })()}
                   <option value="Accepted">Accepted</option>
                   <option value="On the way">On the way</option>
                   <option value="Delivered">Delivered</option>

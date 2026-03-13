@@ -26,14 +26,15 @@ export default function DeliveryPendingOrders() {
   }, []);
 
   const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'Ready for pickup':
+    const s = status?.toLowerCase();
+    switch (s) {
+      case 'ready for pickup':
         return 'bg-yellow-100 text-yellow-700';
-      case 'Out for delivery':
+      case 'out for delivery':
         return 'bg-blue-100 text-blue-700';
-      case 'Pending':
+      case 'pending':
         return 'bg-orange-100 text-orange-700';
-      case 'Picked up':
+      case 'picked up':
         return 'bg-indigo-100 text-indigo-700';
       default:
         return 'bg-neutral-100 text-neutral-700';

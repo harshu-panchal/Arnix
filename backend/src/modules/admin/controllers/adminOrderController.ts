@@ -8,6 +8,43 @@ import Return from "../../../models/Return";
 import { notifySellersOfOrderUpdate } from "../../../services/sellerNotificationService";
 import { Server as SocketIOServer } from "socket.io";
 
+const normalizeAdminOrderStatus = (rawStatus: any): string => {
+  const statusStr = String(rawStatus ?? "");
+  // Legacy/inconsistent statuses found in older data that can break filtering and UI.
+  if (statusStr === "Placed") return "Received";
+  if (statusStr === "Accepted") return "Pending";
+  if (statusStr === "On the way") return "Out for Delivery";
+  if (statusStr === "Picked up") return "Out for Delivery";
+  if (statusStr === "In Transit") return "Out for Delivery";
+  if (statusStr === "Assigned") return "Pending";
+  if (statusStr === "Ready for pickup") return "Processed";
+  if (statusStr === "Out For Delivery") return "Out for Delivery";
+  if (statusStr === "Out for delivery") return "Out for Delivery";
+  return statusStr;
+};
+
+const mapAdminStatusFilterToQuery = (status: any): any => {
+  const s = String(status ?? "");
+  if (!s) return undefined;
+
+  // Treat legacy statuses as their closest modern equivalent for filtering.
+  if (s === "Received") return { $in: ["Received", "Placed"] };
+  if (s === "Pending") return { $in: ["Pending", "Accepted", "Assigned", "Ready for pickup"] };
+  if (s === "Out for Delivery")
+    return {
+      $in: [
+        "Out for Delivery",
+        "On the way",
+        "Picked up",
+        "In Transit",
+        "Out For Delivery",
+        "Out for delivery",
+      ],
+    };
+
+  return s;
+};
+
 /**
  * Get all orders with filters
  */
@@ -26,7 +63,7 @@ export const getAllOrders = asyncHandler(
 
     const query: any = {};
 
-    if (status) query.status = status;
+    if (status) query.status = mapAdminStatusFilterToQuery(status);
     if (paymentStatus) query.paymentStatus = paymentStatus;
     if (dateFrom || dateTo) {
       query.orderDate = {};
@@ -64,7 +101,13 @@ export const getAllOrders = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Orders fetched successfully",
-      data: orders,
+      data: orders.map((order: any) => {
+        const obj = order.toObject ? order.toObject() : order;
+        return {
+          ...obj,
+          status: normalizeAdminOrderStatus(obj.status),
+        };
+      }),
       pagination: {
         page: parseInt(page as string),
         limit: parseInt(limit as string),
@@ -110,7 +153,10 @@ export const getOrderById = asyncHandler(
     return res.status(200).json({
       success: true,
       message: "Order fetched successfully",
-      data: order,
+      data: {
+        ...(order.toObject ? order.toObject() : (order as any)),
+        status: normalizeAdminOrderStatus((order as any).status),
+      },
     });
   }
 );
@@ -296,21 +342,29 @@ export const getOrdersByStatus = asyncHandler(
 
     const skip = (parseInt(page as string) - 1) * parseInt(limit as string);
 
+    const statusQuery = mapAdminStatusFilterToQuery(status);
+
     const [orders, total] = await Promise.all([
-      Order.find({ status })
+      Order.find({ status: statusQuery })
         .populate("customer", "name email phone")
         .populate("deliveryBoy", "name mobile")
         .populate("items")
         .sort({ orderDate: -1 })
         .skip(skip)
         .limit(parseInt(limit as string)),
-      Order.countDocuments({ status }),
+      Order.countDocuments({ status: statusQuery }),
     ]);
 
     return res.status(200).json({
       success: true,
       message: `Orders with status ${status} fetched successfully`,
-      data: orders,
+      data: orders.map((order: any) => {
+        const obj = order.toObject ? order.toObject() : order;
+        return {
+          ...obj,
+          status: normalizeAdminOrderStatus(obj.status),
+        };
+      }),
       pagination: {
         page: parseInt(page as string),
         limit: parseInt(limit as string),
